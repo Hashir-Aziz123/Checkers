@@ -6,13 +6,13 @@ import consts
 
 # pygame setup
 pygame.init()
-window = pygame.display.set_mode((1300, 700))
+window = pygame.display.set_mode((1300, 700), 0, 32)
 clock = pygame.time.Clock()
 running = True
 
 # Initialize font
 pygame.font.init()
-font = pygame.font.SysFont("Arial", 36)  # Choose font and size
+font = pygame.font.SysFont("Helvetica", 36)  # Choose font and size
 
 # Initialize board object
 game_board = board.board(window)
@@ -23,9 +23,9 @@ selected_piece_pos = None
 
 def display_turn(window, turn):
     """Display the current player's turn on the screen."""
-    text = f"Player 1's Turn" if turn == "player1" else "Player 2's Turn"
+    text = f"Red's Turn" if turn == "player1" else "Black's Turn"
     text_surface = font.render(text, True, (255, 255, 255))  # White text
-    window.blit(text_surface, (window.get_width() // 2 - text_surface.get_width() // 2, 20))
+    window.blit(text_surface, (window.get_width() // 2 - text_surface.get_width() // 2, 17))
 
 while running:
     # Poll for events

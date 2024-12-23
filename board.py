@@ -8,17 +8,30 @@ class board:
         self.boardArray = [[None for _ in range(consts.BOARD_SIZE)] for _ in range(consts.BOARD_SIZE)]  # Create a 2D array to represent the board
         self.window = window
         self.turn = "player1"
+                
+        self.initialize_board_background()
+        
         self.draw_board()
         self.initialize_board()
+
+    def initialize_board_background(self):        
+        self.board_background_image = pygame.image.load("assets/board_background.png").convert_alpha()
+        self.board_background_image.set_alpha(100)
+        self.board_background_image = pygame.transform.scale(
+            self.board_background_image,
+            (consts.BOARD_SIZE * consts.SQUARE_SIZE, consts.BOARD_SIZE * consts.SQUARE_SIZE)
+        )
 
     def draw_board(self):
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
-                color = "white" if (row + col) % 2 == 0 else "black"
+                color = pygame.Color(215, 165, 97) if (row + col) % 2 == 0 else pygame.Color(165, 102, 37)
                 pygame.draw.rect(self.window, color,
                                  (col * consts.SQUARE_SIZE + consts.CENTER_OFFSET,
                                   row * consts.SQUARE_SIZE + consts.CENTER_OFFSET / 6,
                                   consts.SQUARE_SIZE, consts.SQUARE_SIZE))
+        self.window.blit(self.board_background_image, (consts.CENTER_OFFSET, consts.CENTER_OFFSET / 6))
+        
                 
     def initialize_board(self):
         for row in range(consts.BOARD_SIZE):
