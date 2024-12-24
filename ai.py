@@ -14,7 +14,7 @@ class AI:
         """
         Decide the best move based on the AI level.
         """
-        all_moves = self.board.get_all_valid_moves("player1")
+        all_moves = self.board.get_all_valid_moves("AI")
         if not all_moves:
             print("[DEBUG] AI: No valid moves available.")
             return None  # No valid moves available
@@ -82,7 +82,7 @@ class AI:
         if depth == 0 or board.is_game_over():
             return self._evaluate_board(board)
 
-        all_moves = board.get_all_valid_moves("player1" if is_maximizing else "player2")
+        all_moves = board.get_all_valid_moves("AI" if is_maximizing else "Player")
         if is_maximizing:
             best_score = float('-inf')
             for move in all_moves:
@@ -110,7 +110,7 @@ class AI:
         for row in board.boardArray:
             for piece in row:
                 if piece:
-                    if piece.player == "player1":
+                    if piece.player == "AI":
                         score += 1 + (2 if piece.isKing else 0)  # Reward AI pieces
                     else:
                         score -= 1 + (2 if piece.isKing else 0)  # Penalize opponent pieces

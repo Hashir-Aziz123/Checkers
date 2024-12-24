@@ -17,9 +17,9 @@ class piece:
         cord_x = self.col * consts.SQUARE_SIZE + consts.X_CENTER_OFFSET + consts.SQUARE_SIZE // 2
         cord_y = self.row * consts.SQUARE_SIZE + consts.Y_CENTER_OFFSET + consts.SQUARE_SIZE // 2
         # Add visual indication for a king
-        outline_color = pygame.Color(234, 46, 30) if self.player == "player1" else pygame.Color(75, 75, 75)
-        inner_lining_color = pygame.Color(188, 6, 21) if self.player == "player1" else pygame.Color(62, 62, 62)
-        innermost_point_color = pygame.Color(234, 46, 30) if self.player == "player1" else pygame.Color(75, 75, 75)
+        outline_color = pygame.Color(234, 46, 30) if self.player == "AI" else pygame.Color(75, 75, 75)
+        inner_lining_color = pygame.Color(188, 6, 21) if self.player == "AI" else pygame.Color(62, 62, 62)
+        innermost_point_color = pygame.Color(234, 46, 30) if self.player == "AI" else pygame.Color(75, 75, 75)
 
         shadow_surface = pygame.Surface((2 * radius * 1.3, 2 * radius * 1.3))
         shadow_surface.set_colorkey((0, 0, 0))

@@ -9,6 +9,7 @@ pygame.init()
 window = pygame.display.set_mode((1280, 720), 0, 32)
 clock = pygame.time.Clock()
 running = True
+paused = False
 
 # Initialize font
 pygame.font.init()
@@ -21,18 +22,18 @@ game_board = board.Board(window)
 selected_piece = None
 
 # Ask the user to select AI level
-ai_level = "easy"  # Change this to "easy", "medium", or "hard" to test AI levels
+ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 
 def display_turn(window, turn):
     """Display the current player's turn on the screen."""
 
-    text = f"Red's Turn" if turn == "player1" else "Black's Turn"
+    text = f"Red's Turn" if turn == "AI" else "Black's Turn"
     text_surface = font.render(text, True, "black")  
     text_position =  (
                         consts.X_CENTER_OFFSET - text_surface.get_width() - 50,
                         consts.Y_CENTER_OFFSET * 4 - text_surface.get_height() / 2
-                        ) if turn == "player1" else (
+                        ) if turn == "AI" else (
                           consts.X_CENTER_OFFSET + 8 * consts.SQUARE_SIZE + 60,
                           consts.Y_CENTER_OFFSET * 14 - text_surface.get_height() / 2
                         )
@@ -51,12 +52,14 @@ while running:
             row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
             # If a piece is clicked, select it
-            if game_board.boardArray[row][col] is not None and game_board.boardArray[row][col].player == "player2":
+            if game_board.boardArray[row][col] is not None \
+            and game_board.boardArray[row][col].player == "Player" \
+                and not paused:
                 selected_piece = (row, col)
                 print(f"Piece selected at: {selected_piece}")
 
         if event.type == pygame.MOUSEBUTTONUP:
-            if selected_piece is not None:
+            if selected_piece is not None and not paused:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
@@ -67,20 +70,21 @@ while running:
                 selected_piece = None
 
     # AI's turn
-    if game_board.turn == "player1":
+    if game_board.turn == "AI" and not paused:
         print("AI's turn...")
         best_move = game_ai.get_best_move()
         if best_move:
             game_board.apply_move(best_move)  # AI makes its move
-            game_board.turn = "player2"  # Switch turn to the player after AI's move
+            # game_board.turn = "Player"  # Switch turn to the player after AI's move
         else:
             print("AI has no valid moves! Game Over.")
-            running = False
+            # paused = True
 
 
     winner = game_board.check_winner()
-    if winner:
+    if winner and not paused:
         print(f"{winner} wins the game!")
+        paused = True
 
     # Clear screen
     window.fill("white")  # Window background

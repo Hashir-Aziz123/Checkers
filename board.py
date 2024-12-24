@@ -6,7 +6,7 @@ class Board:
     def __init__(self, window):
         self.boardArray = [[None for _ in range(consts.BOARD_SIZE)] for _ in range(consts.BOARD_SIZE)]
         self.window = window
-        self.turn = "player2"
+        self.turn = "Player"
         self.initialize_board_background()
         self.draw_board()
         self.initialize_board()
@@ -36,9 +36,9 @@ class Board:
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
                 if row < 3 and (row + col) % 2 == 1:
-                    self.boardArray[row][col] = pieces.piece(row, col, "player1", self.window)
+                    self.boardArray[row][col] = pieces.piece(row, col, "AI", self.window)
                 elif row >= consts.BOARD_SIZE - 3 and (row + col) % 2 == 1:
-                    self.boardArray[row][col] = pieces.piece(row, col, "player2", self.window)
+                    self.boardArray[row][col] = pieces.piece(row, col, "Player", self.window)
 
     def draw_pieces(self):
         for row in range(consts.BOARD_SIZE):
@@ -75,15 +75,15 @@ class Board:
                 return
 
         if not selected_piece.isKing and \
-           ((selected_piece.player == "player1" and newRow == consts.BOARD_SIZE - 1) or
-            (selected_piece.player == "player2" and newRow == 0)):
+           ((selected_piece.player == "AI" and newRow == consts.BOARD_SIZE - 1) or
+            (selected_piece.player == "Player" and newRow == 0)):
             selected_piece.make_king()
-            
+
         self.draw_board()
         self.draw_pieces()
 
         # Switch turns
-        self.turn = "player2" if self.turn == "player1" else "player1"
+        self.turn = "Player" if self.turn == "AI" else "AI"
 
     def check_winner(self): 
         player1_pieces = []
@@ -93,22 +93,22 @@ class Board:
             for col in range(consts.BOARD_SIZE):
                 piece = self.boardArray[row][col]
                 if piece:
-                    if piece.player == "player1":
+                    if piece.player == "AI":
                         player1_pieces.append(piece)
-                    elif piece.player == "player2":
+                    elif piece.player == "Player":
                         player2_pieces.append(piece)
 
         if not player1_pieces:
-            return "player2"
+            return "Player"
         
         if not player2_pieces:
-            return "player1"
+            return "AI"
         
         if not any (self.has_valid_moves(p) for p in player1_pieces):
-            return "player2"
+            return "Player"
         
         if not any (self.has_valid_moves(p) for p in player2_pieces):
-            return "player1"
+            return "AI"
         
     def has_valid_moves(self, piece):
         """Checks if a given piece has any valid moves."""
@@ -136,16 +136,16 @@ class Board:
         colDiff = abs(newCol - prevCol)
         if abs(rowDiff) == 1 and colDiff == 1:
             return selected_piece.isKing or \
-                   (selected_piece.player == "player1" and rowDiff == 1) or \
-                   (selected_piece.player == "player2" and rowDiff == -1)
+                   (selected_piece.player == "AI" and rowDiff == 1) or \
+                   (selected_piece.player == "Player" and rowDiff == -1)
         
         if abs(rowDiff) == 2 and colDiff == 2:
             midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
             mid_piece = self.boardArray[midRow][midCol]
             valid_direction = (
                 selected_piece.isKing or
-                (selected_piece.player == "player1" and rowDiff == 2) or
-                (selected_piece.player == "player2" and rowDiff == -2)
+                (selected_piece.player == "AI" and rowDiff == 2) or
+                (selected_piece.player == "Player" and rowDiff == -2)
             )
             return (
                 mid_piece is not None and 
@@ -160,7 +160,7 @@ class Board:
         if piece.isKing:
             directions = [(2, 2), (2, -2), (-2, 2), (-2, -2)]
         else:
-            directions = [(2, 2), (2, -2)] if piece.player == "player1" else [(-2, 2), (-2, -2)]
+            directions = [(2, 2), (2, -2)] if piece.player == "AI" else [(-2, 2), (-2, -2)]
     
         for dr, dc in directions:
             newRow, newCol = piece.row + dr, piece.col + dc
@@ -177,8 +177,8 @@ class Board:
 
 
     def is_game_over(self):
-        player1_moves = self.get_all_valid_moves("player1")
-        player2_moves = self.get_all_valid_moves("player2")
+        player1_moves = self.get_all_valid_moves("AI")
+        player2_moves = self.get_all_valid_moves("Player")
         return len(player1_moves) == 0 or len(player2_moves) == 0
 
     def get_all_valid_moves(self, player):
@@ -207,7 +207,7 @@ class Board:
         if piece.isKing:
             directions = [(-1, -1), (-1, 1), (1, -1), (1, 1),(-2, -2), (-2, 2), (2, -2), (2, 2)]
         else:
-            directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "player2" else [(1, -1), (1, 1),(2, -2), (2, 2)]
+            directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "Player" else [(1, -1), (1, 1),(2, -2), (2, 2)]
 
         for dr, dc in directions:
             newRow, newCol = piece.row + dr, piece.col + dc
@@ -237,7 +237,4 @@ class Board:
 
         if abs(newRow - prevRow) == 2:
             midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
-            self.boardArray[midRow][midCol] = pieces.Piece(midRow, midCol, "player2", self.window)
-
-        self.boardArray[prevRow][prevCol].row = prevRow
-        self.boardArray[prevRow][prevCol].col = prevCol
+            self.boardArray[midRow][midCol] = pieces.piece(midRow, midCol, "Player", self.window)
