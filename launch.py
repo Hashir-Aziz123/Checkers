@@ -63,6 +63,10 @@ while running:
                     # Move the piece to the new square
                     game_board.move_piece(selected_piece, (row, col))
 
+                winner = game_board.check_winner()
+                if winner:
+                    print(f"{winner} wins the game!")
+
                 # Reset selection after move attempt
                 selected_piece = None
 

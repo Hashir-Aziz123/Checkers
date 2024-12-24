@@ -101,6 +101,39 @@ class board:
         # Switch turns
         self.turn = "player2" if self.turn == "player1" else "player1"
 
+    def check_winner(self): 
+        player1_pieces = []
+        player2_pieces = []
+
+        for row in range(consts.BOARD_SIZE):
+            for col in range(consts.BOARD_SIZE):
+                piece = self.boardArray[row][col]
+                if piece:
+                    if piece.player == "player1":
+                        player1_pieces.append(piece)
+                    elif piece.player == "player2":
+                        player2_pieces.append(piece)
+
+        if not player1_pieces:
+            return "player2"
+        
+        if not player2_pieces:
+            return "player1"
+        
+        if not any (self.has_valid_moves(p) for p in player1_pieces):
+            return "player2"
+        
+        if not any (self.has_valid_moves(p) for p in player2_pieces):
+            return "player1"
+        
+    def has_valid_moves(self, piece):
+        """Checks if a given piece has any valid moves."""
+        directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]  # All possible directions
+        for dr, dc in directions:
+            newRow, newCol = piece.row + dr, piece.col + dc
+            if self.is_valid_move((piece.row, piece.col), (newRow, newCol)):
+                return True
+        return self.has_capture_moves(piece)
 
     def is_valid_move(self, prevPos, newPos):
         prevRow, prevCol = prevPos
