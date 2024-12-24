@@ -1,7 +1,7 @@
 import pygame
 import board
 import util
-import pieces
+import ai  # Import the AI module
 import consts
 
 # pygame setup
@@ -15,11 +15,14 @@ pygame.font.init()
 font = pygame.font.SysFont("Helvetica", 36)  # Choose font and size
 
 # Initialize board object
-game_board = board.board(window)
+game_board = board.Board(window)
 
 # Selected piece tracking
 selected_piece = None
-selected_piece_pos = None
+
+# Ask the user to select AI level
+ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
+game_ai = ai.AI(game_board, level=ai_level)
 
 def display_turn(window, turn):
     """Display the current player's turn on the screen."""
@@ -39,7 +42,7 @@ def display_turn(window, turn):
     window.blit(text_surface, text_position)
 
 while running:
-    # Poll for events
+    print(game_board.turn)  # Debugging turn tracking
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -49,7 +52,7 @@ while running:
             row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
             # If a piece is clicked, select it
-            if game_board.boardArray[row][col] != None:
+            if game_board.boardArray[row][col] is not None and game_board.boardArray[row][col].player == "player2":
                 selected_piece = (row, col)
                 print(f"Piece selected at: {selected_piece}")
 
@@ -59,12 +62,21 @@ while running:
                 row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
                 # Check if the move is valid (valid square)
-                if game_board.boardArray[row][col] == None:  
-                    # Move the piece to the new square
+                if game_board.is_valid_move(selected_piece, (row, col)):
                     game_board.move_piece(selected_piece, (row, col))
+                    selected_piece = None
+                    game_board.turn = "player1"  # Switch turn to AI after player's move
 
-                # Reset selection after move attempt
-                selected_piece = None
+    # AI's turn
+    if game_board.turn == "player1":
+        print("AI's turn...")
+        best_move = game_ai.get_best_move()
+        if best_move:
+            game_board.apply_move(best_move)  # AI makes its move
+            game_board.turn = "player2"  # Switch turn to the player after AI's move
+        else:
+            print("AI has no valid moves! Game Over.")
+            running = False
 
     # Clear screen
     window.fill("white")  # Window background
