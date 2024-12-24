@@ -67,12 +67,18 @@ class Board:
             midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
             self.boardArray[midRow][midCol] = None
 
+            # Check for additional capture moves
+            if self.has_capture_moves(selected_piece):
+                print("Multiple captures available! Continue with the same piece.")
+                self.draw_board()
+                self.draw_pieces()
+                return
+
         if not selected_piece.isKing and \
            ((selected_piece.player == "player1" and newRow == consts.BOARD_SIZE - 1) or
             (selected_piece.player == "player2" and newRow == 0)):
             selected_piece.make_king()
-
-        self.turn = "player1" if self.turn == "player2" else "player2"
+            
         self.draw_board()
         self.draw_pieces()
 

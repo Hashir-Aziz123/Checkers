@@ -63,8 +63,8 @@ while running:
                 # Check if the move is valid (valid square)
                 if game_board.is_valid_move(selected_piece, (row, col)):
                     game_board.move_piece(selected_piece, (row, col))
-                    selected_piece = None
-                    game_board.turn = "player1"  # Switch turn to AI after player's move
+
+                selected_piece = None
 
     # AI's turn
     if game_board.turn == "player1":
