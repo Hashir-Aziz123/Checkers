@@ -95,24 +95,43 @@ class Board:
             return selected_piece.isKing or \
                    (selected_piece.player == "player1" and rowDiff == 1) or \
                    (selected_piece.player == "player2" and rowDiff == -1)
-
+        
         if abs(rowDiff) == 2 and colDiff == 2:
             midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
             mid_piece = self.boardArray[midRow][midCol]
-            return mid_piece and mid_piece.player != selected_piece.player
+            valid_direction = (
+                selected_piece.isKing or
+                (selected_piece.player == "player1" and rowDiff == 2) or
+                (selected_piece.player == "player2" and rowDiff == -2)
+            )
+            return (
+                mid_piece is not None and 
+                mid_piece.player != selected_piece.player and
+                self.boardArray[newRow][newCol] is None and
+                valid_direction
+            )
 
         return False
 
     def has_capture_moves(self, piece):
-        directions = [(2, 2), (2, -2), (-2, 2), (-2, -2)]
+        if piece.isKing:
+            directions = [(2, 2), (2, -2), (-2, 2), (-2, -2)]
+        else:
+            directions = [(2, 2), (2, -2)] if piece.player == "player1" else [(-2, 2), (-2, -2)]
+    
         for dr, dc in directions:
             newRow, newCol = piece.row + dr, piece.col + dc
             if 0 <= newRow < consts.BOARD_SIZE and 0 <= newCol < consts.BOARD_SIZE:
                 midRow, midCol = (piece.row + newRow) // 2, (piece.col + newCol) // 2
                 mid_piece = self.boardArray[midRow][midCol]
-                if self.boardArray[newRow][newCol] is None and mid_piece and mid_piece.player != piece.player:
+                if (
+                    self.boardArray[newRow][newCol] is None and
+                    mid_piece is not None and
+                    mid_piece.player != piece.player
+                ):
                     return True
         return False
+
 
     def is_game_over(self):
         player1_moves = self.get_all_valid_moves("player1")
@@ -121,29 +140,43 @@ class Board:
 
     def get_all_valid_moves(self, player):
         moves = []
+        # capture_moves = []
+
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
                 piece = self.boardArray[row][col]
                 if piece and piece.player == player:
                     piece_moves = self.get_piece_moves(piece)
-                    moves.extend(piece_moves)
+                    for move in piece_moves:
+                        # if abs(move[0][0] - move[1][0]) == 2:  # Capture move check
+                        #     capture_moves.append(move)
+                        # else:
+                        moves.append(move)
+
+        # print(f"[DEBUG] Player {player} has {len(capture_moves)} capture moves and {len(moves)} regular moves.")
+        # return capture_moves if capture_moves else moves
         return moves
 
+
     def get_piece_moves(self, piece):
-        moves, capture_moves = [], []
-        directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+        moves = []
+        # capture_moves = []
         if piece.isKing:
-            directions.extend([(-2, -2), (-2, 2), (2, -2), (2, 2)])
+            directions = [(-1, -1), (-1, 1), (1, -1), (1, 1),(-2, -2), (-2, 2), (2, -2), (2, 2)]
+        else:
+            directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "player2" else [(1, -1), (1, 1),(2, -2), (2, 2)]
 
         for dr, dc in directions:
             newRow, newCol = piece.row + dr, piece.col + dc
             if self.is_valid_move((piece.row, piece.col), (newRow, newCol)):
-                if abs(dr) == 2:
-                    capture_moves.append(((piece.row, piece.col), (newRow, newCol)))
-                else:
-                    moves.append(((piece.row, piece.col), (newRow, newCol)))
+                # if abs(dr) == 2:
+                #     capture_moves.append(((piece.row, piece.col), (newRow, newCol)))
+                # else:
+                moves.append(((piece.row, piece.col), (newRow, newCol)))
+        # print(capture_moves)
+        return moves
+        # return capture_moves if capture_moves else moves
 
-        return capture_moves if capture_moves else moves
 
     def apply_move(self, move):
         prevPos, newPos = move

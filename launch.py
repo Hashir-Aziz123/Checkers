@@ -21,7 +21,7 @@ game_board = board.Board(window)
 selected_piece = None
 
 # Ask the user to select AI level
-ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
+ai_level = "easy"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 
 def display_turn(window, turn):
@@ -42,7 +42,6 @@ def display_turn(window, turn):
     window.blit(text_surface, text_position)
 
 while running:
-    print(game_board.turn)  # Debugging turn tracking
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

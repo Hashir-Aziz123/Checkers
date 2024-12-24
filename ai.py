@@ -36,13 +36,8 @@ class AI:
         return random.choice(moves)
 
     def _get_heuristic_move(self, moves):
-        """
-        Choose a move based on simple heuristics:
-        - Prioritize moves that capture opponent pieces.
-        - Otherwise, prefer moves that advance pieces.
-        """
         print("[DEBUG] AI (Medium): Choosing a heuristic-based move.")
-        capture_moves = [move for move in moves if self._is_capture_move(move)]
+        capture_moves = [move for move in moves if abs(move[0][0] - move[1][0]) == 2]
 
         if capture_moves:
             print(f"[DEBUG] AI: Found {len(capture_moves)} capture moves.")
@@ -50,6 +45,7 @@ class AI:
 
         print("[DEBUG] AI: No capture moves. Choosing a regular move.")
         return random.choice(moves)  # Fallback to random for other moves
+
 
     def _get_minimax_move(self, moves, depth):
         """
