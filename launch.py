@@ -6,7 +6,7 @@ import consts
 
 # pygame setup
 pygame.init()
-window = pygame.display.set_mode((1300, 700), 0, 32)
+window = pygame.display.set_mode((1280, 720), 0, 32)
 clock = pygame.time.Clock()
 running = True
 
@@ -23,9 +23,20 @@ selected_piece_pos = None
 
 def display_turn(window, turn):
     """Display the current player's turn on the screen."""
+
     text = f"Red's Turn" if turn == "player1" else "Black's Turn"
-    text_surface = font.render(text, True, (255, 255, 255))  # White text
-    window.blit(text_surface, (window.get_width() // 2 - text_surface.get_width() // 2, 17))
+    text_surface = font.render(text, True, "black")  
+    text_position =  (
+                        consts.X_CENTER_OFFSET - text_surface.get_width() - 50,
+                        consts.Y_CENTER_OFFSET * 4 - text_surface.get_height() / 2
+                        ) if turn == "player1" else (
+                          consts.X_CENTER_OFFSET + 8 * consts.SQUARE_SIZE + 60,
+                          consts.Y_CENTER_OFFSET * 14 - text_surface.get_height() / 2
+                        )
+    
+    # TODO: Add rectangle behind text
+    
+    window.blit(text_surface, text_position)
 
 while running:
     # Poll for events
@@ -56,7 +67,7 @@ while running:
                 selected_piece = None
 
     # Clear screen
-    window.fill((0, 0, 0))  # Black background
+    window.fill("white")  # Window background
 
     # Draw board and pieces
     game_board.draw_board()

@@ -21,16 +21,19 @@ class board:
             self.board_background_image,
             (consts.BOARD_SIZE * consts.SQUARE_SIZE, consts.BOARD_SIZE * consts.SQUARE_SIZE)
         )
-
+        
     def draw_board(self):
+        pygame.draw.rect(self.window, (139,69,19),
+                         (consts.X_CENTER_OFFSET - 10, consts.Y_CENTER_OFFSET - 10,
+                          consts.SQUARE_SIZE * 8 + 20, consts.SQUARE_SIZE * 8 + 20))
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
                 color = pygame.Color(215, 165, 97) if (row + col) % 2 == 0 else pygame.Color(165, 102, 37)
                 pygame.draw.rect(self.window, color,
-                                 (col * consts.SQUARE_SIZE + consts.CENTER_OFFSET,
-                                  row * consts.SQUARE_SIZE + consts.CENTER_OFFSET / 6,
+                                 (col * consts.SQUARE_SIZE + consts.X_CENTER_OFFSET,
+                                  row * consts.SQUARE_SIZE + consts.Y_CENTER_OFFSET,
                                   consts.SQUARE_SIZE, consts.SQUARE_SIZE))
-        self.window.blit(self.board_background_image, (consts.CENTER_OFFSET, consts.CENTER_OFFSET / 6))
+        self.window.blit(self.board_background_image, (consts.X_CENTER_OFFSET, consts.Y_CENTER_OFFSET))
         
                 
     def initialize_board(self):

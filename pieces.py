@@ -14,8 +14,8 @@ class piece:
 
     def draw_piece(self):
         radius = 28
-        cord_x = self.col * consts.SQUARE_SIZE + consts.CENTER_OFFSET + consts.SQUARE_SIZE // 2
-        cord_y = self.row * consts.SQUARE_SIZE + consts.CENTER_OFFSET / 6 + consts.SQUARE_SIZE // 2
+        cord_x = self.col * consts.SQUARE_SIZE + consts.X_CENTER_OFFSET + consts.SQUARE_SIZE // 2
+        cord_y = self.row * consts.SQUARE_SIZE + consts.Y_CENTER_OFFSET + consts.SQUARE_SIZE // 2
         # Add visual indication for a king
         outline_color = pygame.Color(234, 46, 30) if self.player == "player1" else pygame.Color(75, 75, 75)
         inner_lining_color = pygame.Color(188, 6, 21) if self.player == "player1" else pygame.Color(62, 62, 62)
