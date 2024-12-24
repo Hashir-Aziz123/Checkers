@@ -20,6 +20,26 @@ class Board:
         )
         
     def draw_board(self):
+        board_shadow_surface = pygame.Surface((consts.BOARD_SIZE * consts.SQUARE_SIZE + 20,
+                                               consts.BOARD_SIZE * consts.SQUARE_SIZE + 20))
+        board_shadow_surface.set_colorkey((0, 0, 0))
+        board_shadow_surface.set_alpha(50)
+        
+        # Draw Board Shadow
+        pygame.draw.rect(board_shadow_surface, (30, 30, 30), 
+                         pygame.Rect(0, 0,
+                             consts.BOARD_SIZE * consts.SQUARE_SIZE + 20, 
+                             consts.BOARD_SIZE * consts.SQUARE_SIZE + 20))
+        self.window.blit(board_shadow_surface, 
+                         (consts.X_CENTER_OFFSET - 5, consts.Y_CENTER_OFFSET - 5))
+        self.window.blit(board_shadow_surface, 
+                         (consts.X_CENTER_OFFSET, consts.Y_CENTER_OFFSET))
+        self.window.blit(board_shadow_surface, 
+                         (consts.X_CENTER_OFFSET - 2.5, consts.Y_CENTER_OFFSET - 2.5))
+        self.window.blit(board_shadow_surface, 
+                         (consts.X_CENTER_OFFSET - 7.5, consts.Y_CENTER_OFFSET - 7.5))
+
+        # Board Outline
         pygame.draw.rect(self.window, (139,69,19),
                          (consts.X_CENTER_OFFSET - 10, consts.Y_CENTER_OFFSET - 10,
                           consts.SQUARE_SIZE * 8 + 20, consts.SQUARE_SIZE * 8 + 20))

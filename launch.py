@@ -1,8 +1,9 @@
 import pygame
 import board
 import util
-import ai  # Import the AI module
+import ai
 import consts
+import gui
 
 # pygame setup
 pygame.init()
@@ -10,10 +11,6 @@ window = pygame.display.set_mode((1280, 720), 0, 32)
 clock = pygame.time.Clock()
 running = True
 paused = False
-
-# Initialize font
-pygame.font.init()
-font = pygame.font.SysFont("Helvetica", 36)  # Choose font and size
 
 # Initialize board object
 game_board = board.Board(window)
@@ -24,23 +21,7 @@ selected_piece = None
 # Ask the user to select AI level
 ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
-
-def display_turn(window, turn):
-    """Display the current player's turn on the screen."""
-
-    text = f"Red's Turn" if turn == "AI" else "Black's Turn"
-    text_surface = font.render(text, True, "black")  
-    text_position =  (
-                        consts.X_CENTER_OFFSET - text_surface.get_width() - 50,
-                        consts.Y_CENTER_OFFSET * 4 - text_surface.get_height() / 2
-                        ) if turn == "AI" else (
-                          consts.X_CENTER_OFFSET + 8 * consts.SQUARE_SIZE + 60,
-                          consts.Y_CENTER_OFFSET * 14 - text_surface.get_height() / 2
-                        )
-    
-    # TODO: Add rectangle behind text
-    
-    window.blit(text_surface, text_position)
+gui = gui.GUI(window)
 
 while running:
     for event in pygame.event.get():
@@ -87,14 +68,14 @@ while running:
         paused = True
 
     # Clear screen
-    window.fill("white")  # Window background
+    window.fill((255,165,79))  # Window background
 
     # Draw board and pieces
     game_board.draw_board()
     game_board.draw_pieces()
 
     # Display current turn
-    display_turn(window, game_board.turn)
+    gui.display_turn(game_board.turn)
 
     pygame.display.flip()  # pygame.display.update()
     clock.tick(60)
