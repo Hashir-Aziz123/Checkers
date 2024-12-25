@@ -2,15 +2,17 @@ import pygame
 import board
 import util
 import ai
-import consts
 import gui
+import pygame_widgets
 
 # pygame setup
 pygame.init()
 window = pygame.display.set_mode((1280, 720), 0, 32)
 clock = pygame.time.Clock()
+
 running = True
 paused = False
+play_again = False
 
 # Initialize board object
 game_board = board.Board(window)
@@ -18,17 +20,20 @@ game_board = board.Board(window)
 # Selected piece tracking
 selected_piece = None
 
+winner = None
+
 # Ask the user to select AI level
 ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 gui = gui.GUI(window)
 
 while running:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             running = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
+            
+        if event.type == pygame.MOUSEBUTTONDOWN and not paused:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
@@ -39,7 +44,7 @@ while running:
                 selected_piece = (row, col)
                 print(f"Piece selected at: {selected_piece}")
 
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONUP and not paused:
             if selected_piece is not None and not paused:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
@@ -61,11 +66,11 @@ while running:
             print("AI has no valid moves! Game Over.")
             # paused = True
 
-
     winner = game_board.check_winner()
     if winner and not paused:
-        print(f"{winner} wins the game!")
         paused = True
+        
+    pygame_widgets.update(events)
 
     # Clear screen
     window.fill((255,165,79))  # Window background
@@ -76,6 +81,18 @@ while running:
 
     # Display current turn
     gui.display_turn(game_board.turn)
+    
+    if paused:        
+        if play_again:
+            winner = None
+            selected_piece = None
+            game_board = board.Board(window)
+            game_ai = ai.AI(game_board, ai_level)
+            paused = False
+            play_again = False
+        elif winner:
+            # TODO: Implement game over!
+            play_again = gui.display_game_over(winner, pygame.event.get())
 
     pygame.display.flip()  # pygame.display.update()
     clock.tick(60)

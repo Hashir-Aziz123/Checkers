@@ -1,4 +1,5 @@
 import pygame
+from pygame_widgets.button import Button
 import consts
 
 class GUI:
@@ -6,6 +7,10 @@ class GUI:
         self.window = window
         pygame.font.init()
         self.font = pygame.font.Font("assets/game_font.ttf", 36)  # Choose font and size
+
+        self.big_font = pygame.font.Font("assets/game_font.ttf", 92)
+        
+        self.play_again = False
         
         # Load Sign Image
         self.sign_board_image = pygame.image.load("assets/game_sign_board_1.png").convert_alpha()
@@ -34,3 +39,42 @@ class GUI:
                          )
         
         self.window.blit(text_surface, text_position)
+
+    def invoke_try_again(self):
+        self.play_again = True
+        return
+    
+    def display_game_over(self, winner, events):
+        text = "You win!" if winner == "Player" else "You lose."
+        text_surface = self.big_font.render(text, True, "white")
+        
+        screen_size_x, screen_size_y = self.window.get_size()
+        text_position = (
+            screen_size_x / 2 - text_surface.get_width() / 2,
+            screen_size_y / 2 - text_surface.get_height() / 2 - 50)
+        
+        pygame.draw.rect(self.window, "black", pygame.Rect(
+            0, screen_size_y / 2 - 200, screen_size_x, 400
+            ))
+        
+        btn_try_again = Button(
+                self.window, 
+                screen_size_x / 2 - 100, screen_size_y / 2 + 50,
+                200, 100, False,
+                text="Play Again",
+                font=self.font,
+                fontSize=20,
+                textColour=(255, 255, 255),
+                radius=20
+            )
+        
+        btn_try_again.onClick=self.invoke_try_again
+        
+        btn_try_again.draw()
+        btn_try_again.listen(events)
+        
+        self.window.blit(text_surface, text_position)
+        
+        return self.play_again
+        
+        
