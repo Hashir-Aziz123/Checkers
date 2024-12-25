@@ -65,7 +65,8 @@ class GUI:
                 text="Play Again",
                 font=self.font,
                 textColour=(255, 255, 255),
-                radius=20
+                radius=20,
+                inactiveColour=(143, 207, 111)
             )
         
         btn_try_again.onClick=self.invoke_try_again
@@ -103,7 +104,8 @@ class GUI:
             text="Easy",
             font=self.font,
             textColour=(255, 255, 255),
-            radius=20 
+            radius=20,
+            inactiveColour=(143, 207, 111)
         )
         
         btn_easy_difficulty.onClick=self.choose_difficulty_onClick
@@ -116,7 +118,8 @@ class GUI:
             text="Medium",
             font=self.font,
             textColour=(255, 255, 255),
-            radius=20
+            radius=20,
+            inactiveColour=(170, 170, 170)
         )
         
         btn_medium_difficulty.onClick=self.choose_difficulty_onClick
@@ -130,6 +133,7 @@ class GUI:
             font=self.font,
             textColour=(255, 255, 255),
             radius=20,
+            inactiveColour=(203, 97, 97)
         )
         
         btn_hard_difficulty.onClick=self.choose_difficulty_onClick

@@ -198,7 +198,7 @@ class Board:
                     self.boardArray[newRow][newCol] is None and
                     mid_piece is not None and
                     mid_piece.player != piece.player
-                ):
+                ):                    
                     return True
         return False
 
@@ -265,3 +265,29 @@ class Board:
         if abs(newRow - prevRow) == 2:
             midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
             self.boardArray[midRow][midCol] = pieces.piece(midRow, midCol, "Player", self.window)
+
+    def highlight (self, pos, color="green"):
+        row, col = pos
+        if self.boardArray[row][col] is not None:
+            self.boardArray[row][col].hightlight()
+        else:
+            highlight_surface = pygame.Surface((consts.SQUARE_SIZE, consts.SQUARE_SIZE))
+            highlight_surface.set_colorkey((0, 0, 0))
+            highlight_surface.set_alpha(50)
+            
+            pygame.draw.rect(
+                highlight_surface,
+                color,
+                pygame.Rect(
+                    0, 0, 
+                    consts.SQUARE_SIZE,
+                    consts.SQUARE_SIZE
+                )
+            )
+            
+            self.window.blit(highlight_surface,
+                             (
+                                 col * consts.SQUARE_SIZE + consts.X_CENTER_OFFSET,
+                                 row * consts.SQUARE_SIZE + consts.Y_CENTER_OFFSET,
+                             ))
+        
