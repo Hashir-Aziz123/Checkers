@@ -25,29 +25,11 @@ class AI:
         print(f"[DEBUG] AI: Found {len(all_moves)} valid moves.")
 
         if self.level == "easy":
-            return self._get_heuristic_move(all_moves)
+            return self._get_minimax_move(all_moves, depth=1)  # Adjust depth for complexity
         elif self.level == "medium":
             return self._get_minimax_move(all_moves, depth=2)  # Adjust depth for complexity
         elif self.level == "hard":
             return self._get_minimax_move(all_moves, depth=4)  # Adjust depth for complexity
-
-    def _get_random_move(self, moves):
-        """
-        Choose a random move.
-        """
-        print("[DEBUG] AI (Easy): Choosing a random move.")
-        return random.choice(moves)
-
-    def _get_heuristic_move(self, moves):
-        print("[DEBUG] AI (Medium): Choosing a heuristic-based move.")
-        capture_moves = [move for move in moves if self._is_capture_move(move)]
-
-        if capture_moves:
-            print(f"[DEBUG] AI: Found {len(capture_moves)} capture moves.")
-            return random.choice(capture_moves)  # Randomize among captures
-
-        print("[DEBUG] AI: No capture moves. Choosing a regular move.")
-        return random.choice(moves)  # Fallback to random for other moves
 
     def _evaluate_board(self, board):
         """
