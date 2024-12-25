@@ -64,7 +64,6 @@ class GUI:
                 200, 100, False,
                 text="Play Again",
                 font=self.font,
-                fontSize=20,
                 textColour=(255, 255, 255),
                 radius=20
             )
@@ -78,16 +77,74 @@ class GUI:
         
         return self.play_again
         
+    def choose_difficulty_onClick(self, level : str):
+        self.chosen_difficulty = level
         
-    def display_choose_difficulty(self):
+    def display_choose_difficulty(self, events):
         screen_size_x, screen_size_y = self.window.get_size()
-        pygame.draw.rect(
+        pygame.draw.rect(self.window, "black", pygame.Rect(
+            0, screen_size_y / 2 - 200, screen_size_x, 400
+            ))
+
+        
+        text_surface = self.big_font.render("Choose AI Difficulty", True, "white")
+        
+        screen_size_x, screen_size_y = self.window.get_size()
+        text_position = (
+            screen_size_x / 2 - text_surface.get_width() / 2,
+            screen_size_y / 2 - text_surface.get_height() / 2 - 50)
+        
+        self.window.blit(text_surface, text_position)
+        
+        btn_easy_difficulty = Button(
             self.window,
-            "black",
-            pygame.Rect(0, screen_size_y / 2 - 300, screen_size_x, 600)
+            screen_size_x / 2 - 320, screen_size_y / 2 + 50,
+            200, 100, False,
+            text="Easy",
+            font=self.font,
+            textColour=(255, 255, 255),
+            radius=20 
         )
-        # btn_hard_difficulty = Button(
-        #     self.window,
-            
-        # )
+        
+        btn_easy_difficulty.onClick=self.choose_difficulty_onClick
+        btn_easy_difficulty.onClickParams = ["easy"]
+        
+        btn_medium_difficulty = Button(
+            self.window,
+            screen_size_x / 2 - 100, screen_size_y / 2 + 50,
+            200, 100, False,
+            text="Medium",
+            font=self.font,
+            textColour=(255, 255, 255),
+            radius=20
+        )
+        
+        btn_medium_difficulty.onClick=self.choose_difficulty_onClick
+        btn_medium_difficulty.onClickParams = ["medium"]
+        
+        btn_hard_difficulty = Button(
+            self.window,
+            screen_size_x / 2 + 120, screen_size_y / 2 + 50,
+            200, 100, False,
+            text="Hard",
+            font=self.font,
+            textColour=(255, 255, 255),
+            radius=20,
+        )
+        
+        btn_hard_difficulty.onClick=self.choose_difficulty_onClick
+        btn_hard_difficulty.onClickParams = ["hard"] 
+        
+        btn_easy_difficulty.draw()
+        btn_easy_difficulty.listen(events)
+        
+        btn_medium_difficulty.draw()
+        btn_medium_difficulty.listen(events)
+        
+        btn_hard_difficulty.draw()
+        btn_hard_difficulty.listen(events)
+        
+        if self.chosen_difficulty:
+            return self.chosen_difficulty
+        
         return None

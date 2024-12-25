@@ -12,8 +12,10 @@ window = pygame.display.set_mode((1280, 720), 0, 32)
 clock = pygame.time.Clock()
 
 running = True
-paused = False
-play_again = False
+paused = True
+
+# Starts as true by default to show the difficuly selection screen
+play_again = True 
 
 # Initialize board and gui object
 game_board = board.Board(window)
@@ -25,8 +27,8 @@ selected_piece = None
 winner = None
 
 # Ask the user to select AI level
-default_ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
-game_ai = ai.AI(game_board, level=default_ai_level)
+default_ai_level = None  # Change this to "easy", "medium", or "hard" to test AI levels
+# game_ai = ai.AI(game_board, level=default_ai_level)
 
 while running:
     events = pygame.event.get()
@@ -101,12 +103,13 @@ while running:
     
     if paused:        
         if play_again:
-            new_difficulty_level = game_gui.display_choose_difficulty()
+            new_difficulty_level = game_gui.display_choose_difficulty(events)
+            print(F"[DEBUG] LAUNCH: Diff Received from GUI - {new_difficulty_level}")
             if new_difficulty_level:
                 winner = None
                 selected_piece = None
                 game_board = board.Board(window)
-                game_ai = ai.AI(game_board, new_difficulty_level)
+                game_ai = ai.AI(game_board, level=new_difficulty_level)
                 game_gui = gui.GUI(window)
                 paused = False
                 play_again = False
