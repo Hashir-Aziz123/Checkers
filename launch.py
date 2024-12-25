@@ -15,8 +15,9 @@ running = True
 paused = False
 play_again = False
 
-# Initialize board object
+# Initialize board and gui object
 game_board = board.Board(window)
+game_gui = gui.GUI(window)
 
 # Selected piece tracking
 selected_piece = None
@@ -24,9 +25,8 @@ selected_piece = None
 winner = None
 
 # Ask the user to select AI level
-ai_level = "hard"  # Change this to "easy", "medium", or "hard" to test AI levels
-game_ai = ai.AI(game_board, level=ai_level)
-gui = gui.GUI(window)
+default_ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
+game_ai = ai.AI(game_board, level=default_ai_level)
 
 while running:
     events = pygame.event.get()
@@ -61,17 +61,18 @@ while running:
         print(f"{winner} wins the game!")
         paused = True
 
-    # Clear screen
-    window.fill((255,165,79))  # Window background
+    if not paused:
+        # Clear screen
+        window.fill((255,165,79))  # Window background
 
-    # Draw board and pieces
-    game_board.draw_board()
-    game_board.draw_pieces()
+        # Draw board and pieces
+        game_board.draw_board()
+        game_board.draw_pieces()
 
-    # Display current turn
-    gui.display_turn(game_board.turn)
+        # Display current turn
+        game_gui.display_turn(game_board.turn)
 
-    pygame.display.update()  # pygame.display.update()
+        pygame.display.update()  # pygame.display.update()
     
     # AI's turn
     if game_board.turn == "AI" and not paused:
@@ -94,22 +95,26 @@ while running:
     game_board.draw_board()
     game_board.draw_pieces()
 
-    # Display current turn
-    gui.display_turn(game_board.turn)
+    if not paused:
+        # Display current turn
+        game_gui.display_turn(game_board.turn)
     
     if paused:        
         if play_again:
             winner = None
             selected_piece = None
             game_board = board.Board(window)
-            game_ai = ai.AI(game_board, ai_level)
-            paused = False
-            play_again = False
+            new_difficulty_level = game_gui.display_choose_difficulty()
+            if new_difficulty_level:
+                game_ai = ai.AI(game_board, new_difficulty_level)
+                game_gui = gui.GUI(window)
+                paused = False
+                play_again = False
         elif winner:
             # TODO: Implement game over!
-            play_again = gui.display_game_over(winner, pygame.event.get())
+            play_again = game_gui.display_game_over(winner, pygame.event.get())
 
-    pygame.display.flip()  # pygame.display.update()
+    pygame.display.update()  # pygame.display.update()
     clock.tick(60)
 
 pygame.quit()

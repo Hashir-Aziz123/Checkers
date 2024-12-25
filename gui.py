@@ -11,6 +11,7 @@ class GUI:
         self.big_font = pygame.font.Font("assets/game_font.ttf", 92)
         
         self.play_again = False
+        self.chosen_difficulty = None
         
         # Load Sign Image
         self.sign_board_image = pygame.image.load("assets/game_sign_board_1.png").convert_alpha()
@@ -78,3 +79,6 @@ class GUI:
         return self.play_again
         
         
+    def display_choose_difficulty(self):
+        
+        return None
