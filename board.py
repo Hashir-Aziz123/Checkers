@@ -3,23 +3,28 @@ import pieces
 import consts
 
 class Board:
-    def __init__(self, window):
-        self.boardArray = [[None for _ in range(consts.BOARD_SIZE)] for _ in range(consts.BOARD_SIZE)]
+    def __init__(self, window, sim = False):
         self.window = window
+        self.boardArray = [[None for _ in range(consts.BOARD_SIZE)] for _ in range(consts.BOARD_SIZE)]
         self.turn = "Player"
+        self.sim = sim
         self.initialize_board_background()
         self.draw_board()
         self.initialize_board()
 
-    def initialize_board_background(self):        
-        self.board_background_image = pygame.image.load("assets/board_background.png").convert_alpha()
-        self.board_background_image.set_alpha(100)
-        self.board_background_image = pygame.transform.scale(
-            self.board_background_image,
-            (consts.BOARD_SIZE * consts.SQUARE_SIZE, consts.BOARD_SIZE * consts.SQUARE_SIZE)
-        )
+    def initialize_board_background(self):
+        if self.sim == False:
+            self.board_background_image = pygame.image.load("assets/board_background.png").convert_alpha()
+            self.board_background_image.set_alpha(100)
+            self.board_background_image = pygame.transform.scale(
+                self.board_background_image,
+                (consts.BOARD_SIZE * consts.SQUARE_SIZE, consts.BOARD_SIZE * consts.SQUARE_SIZE)
+            )
         
     def draw_board(self):
+        if self.sim == True:
+            return
+
         board_shadow_surface = pygame.Surface((consts.BOARD_SIZE * consts.SQUARE_SIZE + 20,
                                                consts.BOARD_SIZE * consts.SQUARE_SIZE + 20))
         board_shadow_surface.set_colorkey((0, 0, 0))
@@ -56,11 +61,13 @@ class Board:
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
                 if row < 3 and (row + col) % 2 == 1:
-                    self.boardArray[row][col] = pieces.piece(row, col, "AI", self.window)
+                    self.boardArray[row][col] = pieces.piece(row, col, "AI", self.window, self.sim)
                 elif row >= consts.BOARD_SIZE - 3 and (row + col) % 2 == 1:
-                    self.boardArray[row][col] = pieces.piece(row, col, "Player", self.window)
+                    self.boardArray[row][col] = pieces.piece(row, col, "Player", self.window, self.sim)
 
     def draw_pieces(self):
+        if self.sim == True:
+            return
         for row in range(consts.BOARD_SIZE):
             for col in range(consts.BOARD_SIZE):
                 if self.boardArray[row][col] is not None:
@@ -211,10 +218,10 @@ class Board:
                 if piece and piece.player == player:
                     piece_moves = self.get_piece_moves(piece)
                     for move in piece_moves:
-                        if abs(move[0][0] - move[1][0]) == 2:  # Capture move check
-                            moves.insert(0,move)
-                        else:
-                            moves.append(move)
+                        # if abs(move[0][0] - move[1][0]) == 2:  # Capture move check
+                        #     capture_moves.append(move)
+                        # else:
+                        moves.append(move)
 
         # print(f"[DEBUG] Player {player} has {len(capture_moves)} capture moves and {len(moves)} regular moves.")
         # return capture_moves if capture_moves else moves

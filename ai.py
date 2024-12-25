@@ -1,4 +1,3 @@
-
 import random
 import copy
 from functools import lru_cache
@@ -30,7 +29,7 @@ class AI:
         elif self.level == "medium":
             return self._get_heuristic_move(all_moves)
         elif self.level == "hard":
-            return self._get_minimax_move(all_moves, depth=2)  # Adjust depth for complexity
+            return self._get_minimax_move(all_moves, depth=3)  # Adjust depth for complexity
 
     def _get_random_move(self, moves):
         """
@@ -152,7 +151,7 @@ class AI:
         :param board: The board object to copy.
         :return: A new board object with the same state.
         """
-        new_board = type(board)(board.window)  # Create a new instance of the Board class
+        new_board = type(board)(board.window, True)  # Create a new instance of the Board class
         new_board.boardArray = [
             [self._copy_piece(piece) for piece in row]
             for row in board.boardArray
@@ -168,7 +167,7 @@ class AI:
         """
         if piece is None:
             return None
-        new_piece = type(piece)(piece.row, piece.col, piece.player, piece.window)
+        new_piece = type(piece)(piece.row, piece.col, piece.player, piece.window, True)
         new_piece.isKing = piece.isKing
         return new_piece
 
