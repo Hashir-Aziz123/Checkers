@@ -24,7 +24,7 @@ selected_piece = None
 winner = None
 
 # Ask the user to select AI level
-ai_level = "easy"  # Change this to "easy", "medium", or "hard" to test AI levels
+ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 gui = gui.GUI(window)
 
@@ -56,7 +56,7 @@ while running:
 
                 selected_piece = None
 
-        winner = game_board.check_winner()
+    winner = game_board.check_winner()
     if winner and not paused:
         print(f"{winner} wins the game!")
         paused = True
@@ -71,7 +71,7 @@ while running:
     # Display current turn
     gui.display_turn(game_board.turn)
 
-    pygame.display.flip()  # pygame.display.update()
+    pygame.display.update()  # pygame.display.update()
     
     # AI's turn
     if game_board.turn == "AI" and not paused:
@@ -84,10 +84,6 @@ while running:
         else:
             print("AI has no valid moves! Game Over.")
             # paused = True
-
-    winner = game_board.check_winner()
-    if winner and not paused:
-        paused = True
         
     pygame_widgets.update(events)
 
