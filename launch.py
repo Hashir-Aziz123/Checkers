@@ -101,11 +101,11 @@ while running:
     
     if paused:        
         if play_again:
-            winner = None
-            selected_piece = None
-            game_board = board.Board(window)
             new_difficulty_level = game_gui.display_choose_difficulty()
             if new_difficulty_level:
+                winner = None
+                selected_piece = None
+                game_board = board.Board(window)
                 game_ai = ai.AI(game_board, new_difficulty_level)
                 game_gui = gui.GUI(window)
                 paused = False

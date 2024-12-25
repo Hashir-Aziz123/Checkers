@@ -80,5 +80,14 @@ class GUI:
         
         
     def display_choose_difficulty(self):
-        
+        screen_size_x, screen_size_y = self.window.get_size()
+        pygame.draw.rect(
+            self.window,
+            "black",
+            pygame.Rect(0, screen_size_y / 2 - 300, screen_size_x, 600)
+        )
+        # btn_hard_difficulty = Button(
+        #     self.window,
+            
+        # )
         return None
