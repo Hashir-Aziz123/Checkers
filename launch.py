@@ -24,7 +24,7 @@ selected_piece = None
 winner = None
 
 # Ask the user to select AI level
-ai_level = "medium"  # Change this to "easy", "medium", or "hard" to test AI levels
+ai_level = "easy"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 gui = gui.GUI(window)
 
@@ -75,6 +75,7 @@ while running:
     
     # AI's turn
     if game_board.turn == "AI" and not paused:
+        time.sleep(0.5)
         print("AI's turn...")
         best_move = game_ai.get_best_move()
         if best_move:
@@ -94,7 +95,6 @@ while running:
     window.fill((255,165,79))  # Window background
 
     # Draw board and pieces
-    time.sleep(0.5)
     game_board.draw_board()
     game_board.draw_pieces()
 
