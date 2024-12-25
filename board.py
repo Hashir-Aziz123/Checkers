@@ -211,10 +211,10 @@ class Board:
                 if piece and piece.player == player:
                     piece_moves = self.get_piece_moves(piece)
                     for move in piece_moves:
-                        # if abs(move[0][0] - move[1][0]) == 2:  # Capture move check
-                        #     capture_moves.append(move)
-                        # else:
-                        moves.append(move)
+                        if abs(move[0][0] - move[1][0]) == 2:  # Capture move check
+                            moves.insert(0,move)
+                        else:
+                            moves.append(move)
 
         # print(f"[DEBUG] Player {player} has {len(capture_moves)} capture moves and {len(moves)} regular moves.")
         # return capture_moves if capture_moves else moves

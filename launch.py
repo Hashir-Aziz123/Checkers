@@ -24,7 +24,7 @@ selected_piece = None
 winner = None
 
 # Ask the user to select AI level
-ai_level = "easy"  # Change this to "easy", "medium", or "hard" to test AI levels
+ai_level = "hard"  # Change this to "easy", "medium", or "hard" to test AI levels
 game_ai = ai.AI(game_board, level=ai_level)
 gui = gui.GUI(window)
 
