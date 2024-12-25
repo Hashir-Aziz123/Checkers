@@ -25,11 +25,11 @@ class AI:
         print(f"[DEBUG] AI: Found {len(all_moves)} valid moves.")
 
         if self.level == "easy":
-            return self._get_random_move(all_moves)
-        elif self.level == "medium":
             return self._get_heuristic_move(all_moves)
+        elif self.level == "medium":
+            return self._get_minimax_move(all_moves, depth=2)  # Adjust depth for complexity
         elif self.level == "hard":
-            return self._get_minimax_move(all_moves, depth=3)  # Adjust depth for complexity
+            return self._get_minimax_move(all_moves, depth=4)  # Adjust depth for complexity
 
     def _get_random_move(self, moves):
         """
