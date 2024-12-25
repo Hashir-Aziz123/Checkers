@@ -2,7 +2,7 @@ import pygame
 import consts
 
 class piece:
-    def __init__(self, row, col, player, window):
+    def __init__(self, row, col, player, window, sim):
         self.row = row
         self.col = col
         self.player = player
@@ -10,7 +10,8 @@ class piece:
         self.isKing = False
         self.window = window
 
-        self.draw_piece()
+        if sim == True:
+            self.draw_piece()
 
     def draw_piece(self):
         radius = 28
