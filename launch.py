@@ -4,6 +4,7 @@ import util
 import ai
 import consts
 import gui
+import time
 
 # pygame setup
 pygame.init()
@@ -50,6 +51,23 @@ while running:
 
                 selected_piece = None
 
+        winner = game_board.check_winner()
+    if winner and not paused:
+        print(f"{winner} wins the game!")
+        paused = True
+
+    # Clear screen
+    window.fill((255,165,79))  # Window background
+
+    # Draw board and pieces
+    game_board.draw_board()
+    game_board.draw_pieces()
+
+    # Display current turn
+    gui.display_turn(game_board.turn)
+
+    pygame.display.flip()  # pygame.display.update()
+    
     # AI's turn
     if game_board.turn == "AI" and not paused:
         print("AI's turn...")
@@ -71,6 +89,7 @@ while running:
     window.fill((255,165,79))  # Window background
 
     # Draw board and pieces
+    time.sleep(0.5)
     game_board.draw_board()
     game_board.draw_pieces()
 
