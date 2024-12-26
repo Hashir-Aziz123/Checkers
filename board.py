@@ -230,10 +230,11 @@ class Board:
     def get_piece_moves(self, piece):
         moves = []
         # capture_moves = []
-        if piece.isKing:
-            directions = [(-1, -1), (-1, 1), (1, -1), (1, 1),(-2, -2), (-2, 2), (2, -2), (2, 2)]
-        else:
-            directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "Player" else [(1, -1), (1, 1),(2, -2), (2, 2)]
+        if piece is not None:
+            if piece.isKing:
+                directions = [(-1, -1), (-1, 1), (1, -1), (1, 1),(-2, -2), (-2, 2), (2, -2), (2, 2)]
+            else:
+                directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "Player" else [(1, -1), (1, 1),(2, -2), (2, 2)]
 
         for dr, dc in directions:
             newRow, newCol = piece.row + dr, piece.col + dc
