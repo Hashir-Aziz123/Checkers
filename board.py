@@ -290,4 +290,25 @@ class Board:
                                  col * consts.SQUARE_SIZE + consts.X_CENTER_OFFSET,
                                  row * consts.SQUARE_SIZE + consts.Y_CENTER_OFFSET,
                              ))
+            
+    def is_kinging_move(self, move):
+        """
+        Check if a move results in the piece becoming a king.
+        :param move: The move to check, given as a tuple (start_position, end_position).
+        :return: True if the move results in the piece becoming a king, False otherwise.
+        """
+        start_pos, end_pos = move
+        start_row, start_col = start_pos
+        end_row, end_col = end_pos
+    
+        piece = self.boardArray[start_row][start_col]
+        if piece is None or piece.isKing:  # No piece or already a king
+            return False
+
+        # Determine kinging condition based on player and board rows
+        if (piece.player == "AI" and end_row == 0) or (piece.player == "Player" and end_row == consts.BOARD_SIZE - 1):
+            return True
+
+        return False
+
         

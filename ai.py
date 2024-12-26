@@ -32,20 +32,26 @@ class AI:
             return self._get_minimax_move(all_moves, depth=4)  # Adjust depth for complexity
 
     def _evaluate_board(self, board):
-        """
-        Evaluate the board state.
-        :param board: The board object.
-        :return: A numerical score representing the board's state.
-        """
         score = 0
         for row in board.boardArray:
             for piece in row:
                 if piece:
+                    base_score = 3 if piece.isKing else 1
                     if piece.player == "AI":
-                        score += 1 + (2 if piece.isKing else 0)  # Reward AI pieces
+                        score += base_score
+                        # Reward central positioning
+                        if 2 <= piece.row <= 5 and 2 <= piece.col <= 5:
+                            score += 0.5
                     else:
-                        score -= 1 + (2 if piece.isKing else 0)  # Penalize opponent pieces
-        return score
+                        score -= base_score
+                        # Penalize central positioning for opponent
+                        if 2 <= piece.row <= 5 and 2 <= piece.col <= 5:
+                            score -= 0.5
+        # Add mobility as a factor
+        score += len(board.get_all_valid_moves("AI")) * 0.1
+        score -= len(board.get_all_valid_moves("Player")) * 0.1
+        return score + random.uniform(-0.1, 0.1)
+
 
     def _is_capture_move(self, move):
         """
@@ -67,8 +73,9 @@ class AI:
         best_score = float('-inf')
         alpha = float('-inf')
         beta = float('inf')
+        sorted_moves = sorted(moves, key=lambda move: self._move_priority(move), reverse=True)
 
-        for move in moves:
+        for move in sorted_moves:
             board_copy = self._copy_board(self.board)  # Create a custom copy of the board
             board_copy.apply_move(move)
             score = self._minimax(board_copy, depth - 1, False, alpha, beta)
@@ -82,6 +89,13 @@ class AI:
                 break  # Alpha-beta pruning
 
         return best_move
+
+    def _move_priority(self, move):
+        if self._is_capture_move(move):
+            return 2  # Highest priority for captures
+        if self.board.is_kinging_move(move):
+            return 1.5  # Slightly lower than captures
+        return 1  # Normal move
 
     def _minimax(self, board, depth, is_maximizing, alpha, beta):
         """
