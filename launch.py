@@ -52,7 +52,7 @@ while running:
                     row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
                     # Check if the move is valid (valid square)
-                    if ( row >=0 and row <=8 and col >= 0 and col <= 8):
+                    if (row >=0 and row <=7 and col >= 0 and col <= 7):
                         if game_board.is_valid_move(selected_piece, (row, col)):
                             game_board.move_piece(selected_piece, (row, col))
                             selected_piece = None
