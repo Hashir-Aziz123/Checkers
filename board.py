@@ -255,17 +255,6 @@ class Board:
             return
         self.move_piece(prevPos, newPos)
 
-    def undo_move(self, move):
-        prevPos, newPos = move
-        prevRow, prevCol = prevPos
-        newRow, newCol = newPos
-        self.boardArray[prevRow][prevCol] = self.boardArray[newRow][newCol]
-        self.boardArray[newRow][newCol] = None
-
-        if abs(newRow - prevRow) == 2:
-            midRow, midCol = (prevRow + newRow) // 2, (prevCol + newCol) // 2
-            self.boardArray[midRow][midCol] = pieces.piece(midRow, midCol, "Player", self.window)
-
     def highlight (self, pos, color="green"):
         row, col = pos
         if self.boardArray[row][col] is not None:
