@@ -236,13 +236,13 @@ class Board:
             else:
                 directions = [(-1, -1), (-1, 1),(-2, -2), (-2, 2)] if piece.player == "Player" else [(1, -1), (1, 1),(2, -2), (2, 2)]
 
-        for dr, dc in directions:
-            newRow, newCol = piece.row + dr, piece.col + dc
-            if self.is_valid_move((piece.row, piece.col), (newRow, newCol)):
-                # if abs(dr) == 2:
-                #     capture_moves.append(((piece.row, piece.col), (newRow, newCol)))
-                # else:
-                moves.append(((piece.row, piece.col), (newRow, newCol)))
+            for dr, dc in directions:
+                newRow, newCol = piece.row + dr, piece.col + dc
+                if self.is_valid_move((piece.row, piece.col), (newRow, newCol)):
+                    # if abs(dr) == 2:
+                    #     capture_moves.append(((piece.row, piece.col), (newRow, newCol)))
+                    # else:
+                    moves.append(((piece.row, piece.col), (newRow, newCol)))
         # print(capture_moves)
         return moves
         # return capture_moves if capture_moves else moves
