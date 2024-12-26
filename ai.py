@@ -1,7 +1,3 @@
-import random
-import copy
-from functools import lru_cache
-
 class AI:
     def __init__(self, board, level="easy"):
         """
