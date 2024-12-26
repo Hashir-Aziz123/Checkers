@@ -73,7 +73,7 @@ while running:
 
     if not paused:
         # Clear screen
-        window.fill((255,165,79))  # Window background
+        window.fill((255,165,79))
         
         # Draw board and pieces
         game_board.draw_board()
@@ -89,7 +89,7 @@ while running:
         # Display current turn
         game_gui.display_turn(game_board.turn)
 
-        pygame.display.update()  # pygame.display.update()
+        pygame.display.update()
     
     # AI's turn
     if game_board.turn == "AI" and not paused:
@@ -106,7 +106,7 @@ while running:
     pygame_widgets.update(events)
 
     # Clear screen
-    window.fill((255,165,79))  # Window background
+    window.fill((255,165,79))
 
     # Draw board and pieces
     
@@ -139,7 +139,7 @@ while running:
             # TODO: Implement game over!
             play_again = game_gui.display_game_over(winner, pygame.event.get())
 
-    pygame.display.update()  # pygame.display.update()
+    pygame.display.update()
     clock.tick(60)
 
 pygame.quit()

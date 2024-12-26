@@ -202,7 +202,6 @@ class Board:
                     return True
         return False
 
-
     def is_game_over(self):
         player1_moves = self.get_all_valid_moves("AI")
         player2_moves = self.get_all_valid_moves("Player")
@@ -291,7 +290,7 @@ class Board:
         end_row, end_col = end_pos
     
         piece = self.boardArray[start_row][start_col]
-        if piece is None or piece.isKing:  # No piece or already a king
+        if piece is None or piece.isKing:
             return False
 
         # Determine kinging condition based on player and board rows

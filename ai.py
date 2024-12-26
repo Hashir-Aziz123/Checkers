@@ -57,7 +57,7 @@ class AI:
         :return: True if the move is a capture move, False otherwise.
         """
         prev_pos, new_pos = move
-        return abs(new_pos[0] - prev_pos[0]) == 2  # Capture moves involve jumping over an opponent piece
+        return abs(new_pos[0] - prev_pos[0]) == 2
 
     def _get_minimax_move(self, moves, depth):
         """
