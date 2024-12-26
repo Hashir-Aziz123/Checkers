@@ -39,32 +39,34 @@ while running:
                 row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
                 # If a piece is clicked, select it
-                if game_board.boardArray[row][col] is not None \
-                and game_board.boardArray[row][col].player == "Player" \
-                    and not paused:
-                    selected_piece = (row, col)
-                    is_piece_selected = True
-                    print(f"[DEBUG] launch.py: Piece selected at: {selected_piece}")
+                if ( row >=0 and row <=8 and col >= 0 and col <= 8):
+                    if game_board.boardArray[row][col] is not None \
+                    and game_board.boardArray[row][col].player == "Player" \
+                        and not paused:
+                        selected_piece = (row, col)
+                        is_piece_selected = True
+                        print(f"[DEBUG] launch.py: Piece selected at: {selected_piece}")
             else:
                 if selected_piece is not None and not paused:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     row, col = util.getPosFromMouseCords(mouse_x, mouse_y)
 
                     # Check if the move is valid (valid square)
-                    if game_board.is_valid_move(selected_piece, (row, col)):
-                        game_board.move_piece(selected_piece, (row, col))
-                        selected_piece = None
-                        is_piece_selected = False
-                    elif game_board.boardArray[row][col] is not None \
-                        and game_board.boardArray[row][col].player == "Player" \
-                        and not paused:
-                        selected_piece = (row, col)
-                        is_piece_selected = True
-                        print(f"[DEBUG] launch.py: Piece selected at: {selected_piece}")
-                                
-                    else:
-                        selected_piece = None
-                        is_piece_selected = False
+                    if ( row >=0 and row <=8 and col >= 0 and col <= 8):
+                        if game_board.is_valid_move(selected_piece, (row, col)):
+                            game_board.move_piece(selected_piece, (row, col))
+                            selected_piece = None
+                            is_piece_selected = False
+                        elif game_board.boardArray[row][col] is not None \
+                            and game_board.boardArray[row][col].player == "Player" \
+                            and not paused:
+                            selected_piece = (row, col)
+                            is_piece_selected = True
+                            print(f"[DEBUG] launch.py: Piece selected at: {selected_piece}")
+                                    
+                        else:
+                            selected_piece = None
+                            is_piece_selected = False
 
     winner = game_board.check_winner()
     if winner and not paused:
