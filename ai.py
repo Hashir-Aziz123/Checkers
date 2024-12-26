@@ -1,3 +1,4 @@
+import random
 class AI:
     def __init__(self, board, level="easy"):
         """
