@@ -1,4 +1,4 @@
-# ♟Checkers AI Game
+# Checkers AI Game
 
 A classic Checkers game featuring a powerful AI opponent built using **Minimax with Alpha-Beta Pruning**. Challenge yourself across multiple difficulty levels as the AI evaluates deeper into the game tree.
 
@@ -26,7 +26,7 @@ The AI is implemented using a custom **Minimax algorithm with Alpha-Beta Pruning
 - **Mobility Heuristic**: Encourages flexible positioning by rewarding available moves.
 - **Random Noise**: Slight randomness prevents predictable patterns in tie scenarios.
 
-### 📊 Difficulty Levels:
+### Difficulty Levels:
 
 | Level   | Description              | Depth |
 |---------|--------------------------|-------|
