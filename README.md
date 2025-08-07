@@ -16,20 +16,23 @@ A classic Checkers game featuring a powerful AI opponent built using **Minimax w
 
 ## AI Strategy: Minimax with Alpha-Beta Pruning
 
-The AI is built on a depth-limited Minimax search algorithm with Alpha-Beta Pruning for efficiency.
+The AI is implemented using a custom **Minimax algorithm with Alpha-Beta Pruning** and features several layers of intelligence:
 
-###  Evaluation Function
-- Piece count (normal vs king)
-- Positional advantage (e.g., center control, edge protection)
-- Promotion potential
-- Optional: Mobility / move diversity
+### 💡 Key Components:
 
-### 🧮 Difficulty Levels
+- **Transposition Table**: Caches board evaluations to avoid redundant calculations.
+- **Capture & King Prioritization**: Move ordering gives priority to high-impact moves.
+- **Position-Based Evaluation**: Scores are influenced by piece count, king status, and central control.
+- **Mobility Heuristic**: Encourages flexible positioning by rewarding available moves.
+- **Random Noise**: Slight randomness prevents predictable patterns in tie scenarios.
 
-| Level | Description                | Depth |
-|-------|----------------------------|-------|
-| Easy  | Basic lookahead            | 2     |
-| Medium| Balanced performance       | 4     |
-| Hard  | Challenging + aggressive   | 6     |
-| Expert| High-depth strategic AI    | 8+    |
+### 📊 Difficulty Levels:
+
+| Level   | Description              | Depth |
+|---------|--------------------------|-------|
+| Easy    | Fast, shallow lookahead  | 1     |
+| Medium  | Balanced opponent        | 2     |
+| Hard    | Strategic and aggressive | 4     |
+
+The AI evaluates every legal move, simulates it on a copied board, and recursively explores the resulting game states.
 
